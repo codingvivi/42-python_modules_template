@@ -1,0 +1,16 @@
+_subdirectory: template
+
+project_name:
+  type: str
+  help: Project name (used for the turnin tarball, e.g. python_module_00)
+  default: python_module_00
+
+num_exercises:
+  type: int
+  help: How many exercise folders (ex0..exN-1)?
+  default: 4
+
+_tasks:
+  - "for i in $(seq 0 $(({{ num_exercises }} - 1))); do mkdir -p src/ex$i; done"
+  - "uv sync"
+  - "jj git init"
