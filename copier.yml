@@ -11,6 +11,24 @@ num_exercises:
   default: 4
 
 _tasks:
-  - "for i in $(seq 0 $(({{ num_exercises }} - 1))); do mkdir -p src/ex$i; done"
+  - |
+    for i in $(seq 0 $(({{ num_exercises }} - 1))); do
+        mkdir -p "src/ex$i"
+        cat > "src/ex$i/main.py" <<'PYEOF'
+    def print_header(title: str) -> None:
+        print(f"=== {title} ===")
+        print("")
+
+
+    def main() -> None:
+        pass
+
+
+    if __name__ == "__main__":
+        main()
+    PYEOF
+    done
   - "uv sync"
   - "jj git init"
+  - "gh repo create '42-{{project_name}}' --public --source=. --remote=origin"
+  - "jj bookmark track main --remote=origin"
